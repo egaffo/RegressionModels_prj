@@ -1,0 +1,76 @@
+---
+title: "Regression Models course project: mtcars data set analysis"
+author: "Enrico Gaffo"
+date: "27/10/2015"
+output: html_document
+---
+
+Context
+
+You work for Motor Trend, a magazine about the automobile industry. Looking at 
+a data set of a collection of cars, they are interested in exploring the 
+relationship between a set of variables and miles per gallon (MPG) (outcome). 
+They are particularly interested in the following two questions:
+
+ - “Is an automatic or manual transmission better for MPG”
+ - "Quantify the MPG difference between automatic and manual transmissions"
+
+Take the mtcars data set and write up an analysis to answer their question
+using regression models and exploratory data analyses.
+
+
+```{r, echo=TRUE}
+data(mtcars)
+# mpg    Miles/(US) gallon
+# am    Transmission (0 = automatic, 1 = manual)
+summary(mtcars[, c("mpg", "am")])
+boxplot(mpg ~ am, data = mtcars, ylab = "Miles/(US) gallon", xlab = "0 = automatic, 1 = manual")
+stripchart(mpg ~ am, data = mtcars, vertical = T, method = "jitter",
+           add = TRUE, pch = 16, col = 'blue')
+```
+
+The boxplot above shows that there is a clear increase in miles per gallon for manual transmission.
+
+
+```{r, echo=TRUE}
+fit <- lm(mpg ~ am, data = mtcars)
+summary(fit)
+```
+
+The manual transmission increases average miles per gallon (mpg) (`r round(fit$coefficients[2], 2)` mpg more than the average mpg in automatic transmission vehicles). Hence, manual transmission has better performance, reducing fuel consumption.
+The average mpg driven by automatic transmission vehicles is `r round(fit$coefficients[1], 2)`, 
+while the average mpg manual transmission vehicles is `r round(fit$coefficients[1] + fit$coefficients[2], 2)` mpg, 
+
+```{r, echo=TRUE}
+par(mfrow = c(2, 2))
+plot(fit)
+```
+
+
+
+```{r, echo=TRUE}
+cor(mtcars)
+fit.all <- lm(mpg ~ am + ., data = mtcars)
+summary(fit.all)
+```
+
+
+
+Your report must be: 
+Written as a PDF printout of a compiled (using knitr) R markdown document. 
+Brief. Roughly the equivalent of 2 pages or less for the main text. Supporting
+figures in an appendix can be included up to 5 total pages including the 2 for
+the main report. The appendix can only include figures. Include a first
+paragraph executive summary. Upload your PDF by clicking the Upload button
+below the text box.
+
+Did the student interpret the coefficients correctly?
+Did the student do some exploratory data analyses?
+Did the student fit multiple models and detail their strategy for model selection?
+Did the student answer the questions of interest or detail why the question(s) is (are) not answerable?
+Did the student do a residual plot and some diagnostics?
+Did the student quantify the uncertainty in their conclusions and/or perform an inference correctly?
+Was the report brief (about 2 pages long) for the main body of the report and no longer than 5 with supporting appendix of figures?
+Did the report include an executive summary?
+Was the report done in Rmd (knitr)?
+
